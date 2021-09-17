@@ -34,3 +34,12 @@
 # Folders
 build/
 .vscode/
+tmp/
+node_modules/
+
+# Other files
+*.js
+*.js.h
+*.css
+*.css.h
+sharedPages.h

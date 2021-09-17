@@ -1,0 +1,278 @@
+*
+{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    color: rgba(var(--foregroundColour), 1);
+
+    &:root
+    {
+        //This colour will not be changed at runtime for now but could be in the future so I have left it as a CSS variable so naming is easier in the future.
+        --linkColour: 0, 180, 235;
+    }
+}
+
+body
+{
+    background: rgba(var(--backgroundColour), 1); //For other properties, should I be using 'background' and not 'background-color'?
+    margin: 0;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+}
+
+//#region Text
+h1, .h1 { font-size: 3rem; }
+h2, .h2 { font-size: 2.35rem; }
+h3, .h3 { font-size: 1.75rem; }
+h4, .h4 { font-size: 1.32rem; }
+h5, .h5 { font-size: 1.02rem; }
+h6, .h6 { font-size: .88rem; }
+p, .p
+{
+    font-size: 1rem;
+    text-transform: none;
+}
+
+.paragraph
+{
+    line-height: 150%;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6
+{
+    text-transform: uppercase;
+    margin: 20px 10px;
+    //font-weight: bolder;
+
+    &.accent
+    {
+        color: rgba(var(--accentColour), 1);
+    }
+}
+
+.accent
+{
+    color: rgba(var(--accentColour), 1) !important;
+}
+
+.light
+{
+    font-weight: normal;
+}
+//#endregion
+
+input
+{
+    &[type=text], &[type=email], &[type=password], &[type=number], &[type=color]
+    {
+        outline-width: 0;
+        margin-bottom: 15px;
+        font-weight: normal;
+        width: 100%;
+        height: 30px;
+        border: 0;
+        background-color: transparent;
+        border-bottom: 1px solid rgba(var(--foregroundColour), 1);
+        outline: none;
+        outline-width: 0;
+
+        &.larger
+        {
+            font-size: larger;
+        }
+    }
+}
+
+select
+{
+	font-weight: normal;
+
+	> option
+	{
+		font-weight: normal;
+	}
+}
+
+/*#region Checkbox*/
+.checkboxContainer
+{
+    width: max-content;
+    display: block;
+    position: relative;
+    padding-left: 20px;
+    margin: 20px 10px;
+    cursor: pointer;
+    user-select: none;
+
+    input
+    {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        cursor: pointer;
+
+        &:checked
+        {
+            ~ .checkmark
+            {
+                background-color: rgba(var(--accentColour), 1);
+
+                &:after
+                {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    .checkmark
+    {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        height: 15px;
+        width: 15px;
+        background-color: rgba(var(--backgroundColour), 1);
+        border: 1px solid rgba(var(--foregroundColour), 1);
+
+        &:after
+        {
+            content: '';
+            position: absolute;
+            display: none;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            width: 3px;
+            height: 8px;
+            border: solid rgba(var(--foregroundColour), 1);
+            border-width: 0 2px 2px 0;
+        }
+    }
+}
+/*#endregion*/
+
+/*#region Buttons*/
+button, .asButton
+{
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: medium;
+    color: rgba(var(--foregroundColour), 1);
+    background-color: transparent;
+    transition: ease .4s;
+    transition-property: background-color, color;
+    border-radius: 4px;
+    padding: 10px 15px;
+    outline: none;
+    border: 2.5px solid rgba(var(--foregroundColour), 1);
+
+    &:hover:not(:disabled)
+    {
+        color: rgba(var(--backgroundColour), 1);
+        background-color: rgba(var(--foregroundColour), 1);
+        cursor: pointer;
+    }
+
+    &.containsLink
+    {
+        padding: 10px 0;
+
+        > a
+        {
+            padding: 10px 15px;
+        }
+    }
+
+    &.active
+    {
+        color: rgba(var(--backgroundColour), 1);
+        background-color: rgba(var(--foregroundColour), 1);
+        cursor: default !important;
+    }
+
+    .fill
+    {
+        background-color: rgba(var(--backgroundColourAlt), 1);
+    }
+}
+
+.joinButtons
+{
+    display: flex;
+
+    > button, .asButton
+    {
+        //The elements in the middle do not curve off their corners when it is the last visible element.
+        &:not(.ignore)
+        {
+            //So to fix the previously mentioned issue I have TS(JS) check for the visible elements and mark which should be curved, if it should be curved then don't apply the following styles.
+            &:not(:first-of-type):not(:last-of-type)
+            {
+                &:not(.curveLeft)
+                {
+                    border-left: none;
+                    border-top-left-radius: 0;
+                    border-bottom-left-radius: 0;
+                }
+
+                &:not(.curveRight)
+                {
+                    border-right: none;
+                    border-top-right-radius: 0;
+                    border-bottom-right-radius: 0;
+                }
+            }
+
+            &:first-of-type
+            {
+                border-right: none;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+
+            &:last-of-type
+            {
+                border-left: none;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+        }
+    }
+}
+/*#endregion*/
+
+.center
+{
+    &:not(.x):not(.y)
+    {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    &.x
+    {
+        &.text
+        {
+            text-align: center;
+        }
+
+        &:not(.text)
+        {
+            position: relative;
+            width: max-content;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+
+    &.y
+    {
+        position: absolute;
+        transform: translateY(-50%);
+    }
+}

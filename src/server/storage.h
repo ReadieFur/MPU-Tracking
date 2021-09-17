@@ -1,13 +1,19 @@
 #pragma once
 
 #include <Preferences.h>
+#include <nvs_flash.h>
 
+//I seem to have come across an issue where i can only initalise 
 class Storage
 {
     static Preferences preferences;
 
+    static bool Init(const char* _namespace);
+    static void Deinit();
+
     public:
-        //Clear all data.
+        //Clear data.
+        static void EraseFlash();
         static bool Clear(const char* _namespace);
 
         //Remove a key.

@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "loopFunction.h"
 
 std::vector<LoopFunctionData> LoopFunction::loopFunctions;
