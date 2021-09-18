@@ -44,3 +44,4 @@ node_modules/
 *.css.h
 sharedPages.h
 src/server/webPages.cpp
+*.map

@@ -299,8 +299,8 @@ class Motion
         const gxNow = new Date().getTime();
         if (Math.abs(e.gyroscope[0]) > Math.abs(this.calibrationData.gyroscope.x))
         {
-            this.threeVariables.cube.rotation.z += -(e.gyroscope[0] * ((gxNow - this.lastUpdateTimes.gx) * 0.001));
-            this.domElements.gyroscope.x.innerText = `${e.gyroscope[0]}rad/s`;
+            this.threeVariables.cube.rotation.z += (e.gyroscope[0] - this.calibrationData.gyroscope.x) * ((gxNow - this.lastUpdateTimes.gx) * 0.001);
+            this.domElements.gyroscope.x.innerText = `${e.gyroscope[0] - this.calibrationData.gyroscope.x}rad/s`;
         }
         else
         {
@@ -311,8 +311,8 @@ class Motion
         const gyNow = new Date().getTime();
         if (Math.abs(e.gyroscope[1]) > Math.abs(this.calibrationData.gyroscope.y))
         {
-            this.threeVariables.cube.rotation.x += -(e.gyroscope[1] * ((gyNow - this.lastUpdateTimes.gy) * 0.001));
-            this.domElements.gyroscope.y.innerText = `${e.gyroscope[1]}rad/s`;
+            this.threeVariables.cube.rotation.x += (e.gyroscope[1] - this.calibrationData.gyroscope.y) * ((gyNow - this.lastUpdateTimes.gy) * 0.001);
+            this.domElements.gyroscope.y.innerText = `${e.gyroscope[1] - this.calibrationData.gyroscope.y}rad/s`;
         }
         else
         {
@@ -323,8 +323,8 @@ class Motion
         const gzNow = new Date().getTime();
         if (Math.abs(e.gyroscope[2]) > Math.abs(this.calibrationData.gyroscope.z))
         {
-            this.threeVariables.cube.rotation.y += e.gyroscope[2] * ((gzNow - this.lastUpdateTimes.gz) * 0.001);
-            this.domElements.gyroscope.z.innerText = `${e.gyroscope[2]}rad/s`;
+            this.threeVariables.cube.rotation.y += (e.gyroscope[2] - this.calibrationData.gyroscope.z) * ((gzNow - this.lastUpdateTimes.gz) * 0.001);
+            this.domElements.gyroscope.z.innerText = `${e.gyroscope[2] - this.calibrationData.gyroscope.z}rad/s`;
         }
         else
         {

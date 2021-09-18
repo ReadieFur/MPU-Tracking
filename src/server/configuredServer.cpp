@@ -26,13 +26,18 @@ ConfiguredServer::ConfiguredServer(WebServer **webServer)
     (**this->webServer).server->on("/network/", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(200, "text/html", WebPages::network_html); });
     (**this->webServer).server->on("/network/network.js", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(200, "application/javascript", WebPages::network_js); });
     (**this->webServer).server->on("/network/get", HTTP_GET, SetupServer::GETNetworks);
-    //Couldnt get 'AsyncCallbackJsonWebHandler' to work here.
+    //Couldn't get 'AsyncCallbackJsonWebHandler' to work here.
     (**this->webServer).server->on("/network/post", HTTP_POST, SetupServer::POSTNetwork);
     (**this->webServer).server->on("/sleep", HTTP_POST, SetupServer::POSTSleep);
     (**this->webServer).server->on("/reboot", HTTP_POST, SetupServer::POSTReboot);
     (**this->webServer).server->on("/resetESP", HTTP_POST, SetupServer::POSTResetESP);
 
     //From ConfiguredServer
+    (**this->webServer).server->on("/motion/", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(200, "text/html", WebPages::motion_html); });
+    (**this->webServer).server->on("/motion/motion.js", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(200, "application/javascript", WebPages::motion_js); });
+    (**this->webServer).server->on("/assets/js/three.min.js", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(200, "application/javascript", WebPages::three_min_js); });
+    (**this->webServer).server->on("/assets/js/client.js", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(200, "application/javascript", WebPages::client_js); });
+    (**this->webServer).server->on("/display", HTTP_GET, ConfiguredServer::GETDisplay);
     (**this->webServer).server->on("/display", HTTP_POST, ConfiguredServer::POSTDisplay);
 
     (**this->webServer).server->begin();
@@ -45,8 +50,6 @@ ConfiguredServer::ConfiguredServer(WebServer **webServer)
     String ip = networkConfig.ip.toString();
     Display::DrawString(0, 2, "IP Address:", u8x8_font_amstrad_cpc_extended_f);
     Display::DrawString(0, 3, ip.c_str());
-
-    Serial.println((EDisplayMode)Storage::GetInt("configuredServer", "displayMode", EDisplayMode::DISPLAY_ENABLED));
 
     ConfiguredServer::SetDisplayMode((EDisplayMode)Storage::GetInt("configuredServer", "displayMode", EDisplayMode::DISPLAY_ENABLED));
 
@@ -137,6 +140,11 @@ void ConfiguredServer::UpdateDisplay(void* context, MotionData motionData)
 
         lastDisplayUpdate = currentTime;
     }
+}
+
+void ConfiguredServer::GETDisplay(AsyncWebServerRequest *request)
+{
+    request->send(200, "application/json", "{\"error\":false,\"data\":" + String(displayMode) + "}");
 }
 
 void ConfiguredServer::POSTDisplay(AsyncWebServerRequest *request)
@@ -230,6 +238,7 @@ void ConfiguredServer::SetDisplayMode(EDisplayMode _displayMode)
             Display::U8X8().clearLine(5);
             break;
     }
-    Storage::PutInt("configuredServer", "displayMode", (int)_displayMode);
+    //This storage dosen't seem to be working at the moment, I had this issue before but I can't remember how to fix it.
+    Storage::PutInt("configuredServer", "displayMode", _displayMode);
     displayMode = _displayMode;
 }

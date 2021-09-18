@@ -11,7 +11,7 @@
 #define CONFIGUREDSERVER_H
 enum EDisplayMode
 {
-    DISPLAY_DISABLED,
+    DISPLAY_DISABLED = 0,
     DISPLAY_ENABLED,
     UPDATES_ENABLED_DISPLAY_ENABLED,
     UPDATES_ENABLED_DISPLAY_DISABLED
@@ -33,6 +33,7 @@ class ConfiguredServer
         ~ConfiguredServer() {};
         void MotionUpdated(MotionData motionData);
         static void UpdateDisplay(void* context, MotionData motionData);
+        static void GETDisplay(AsyncWebServerRequest *request);
         static void POSTDisplay(AsyncWebServerRequest *request);
         static void SetDisplayMode(EDisplayMode displayMode);
 };
