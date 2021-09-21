@@ -1,11 +1,12 @@
 #include "webserver.h"
 #include "setupServer.h"
-#include "webPages.h"
 #include "network.h"
 #include "motion.h"
 #include "eventData.h"
 #include "storage.h"
 #include <math.h>
+#include <functional>
+#include <SPIFFS.h>
 
 #ifndef CONFIGUREDSERVER_H
 #define CONFIGUREDSERVER_H

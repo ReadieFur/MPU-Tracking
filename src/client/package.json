@@ -1,6 +1,0 @@
-{
-	"dependencies": {
-		"@types/forge-viewer": "^7.48.0",
-		"@types/three": "^0.131.1"
-	}
-}

@@ -1,35 +1,9 @@
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+#PIO defaults
+.pio
+.vscode/.browse.c_cpp.db*
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+.vscode/ipch
 
 # Folders
 build/
@@ -37,11 +11,7 @@ build/
 tmp/
 node_modules/
 
-# Other files
+# Files
 *.js
-*.js.h
 *.css
-*.css.h
-sharedPages.h
-src/server/webPages.cpp
 *.map

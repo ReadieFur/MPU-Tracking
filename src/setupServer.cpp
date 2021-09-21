@@ -4,15 +4,22 @@ SetupServer::SetupServer(WebServer **webServer)
 {
     this->webServer = webServer;
 
+    if(!SPIFFS.begin())
+    {
+        Serial.println("An Error has occurred while mounting SPIFFS.");
+        Display::Log("SPIFFS Err");
+        return;
+    }
+
     const NetworkConfig setupNetworkConfig = Network::SetupAPNetwork(NULL, NULL, 0, 4, 0, false);
     Display::Clear();
 
-    (**this->webServer).server->on("/assets/css/main.css", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(200, "text/css", WebPages::main_css); });
-    (**this->webServer).server->on("/assets/js/main.js", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(200, "application/javascript", WebPages::main_js); });
+    (**this->webServer).server->on("/assets/css/main.css", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(SPIFFS, "/assets/css/main.css", "text/html"); });
+    (**this->webServer).server->on("/assets/js/main.js", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(SPIFFS, "/assets/js/main.js", "application/javascript"); });
 
     (**this->webServer).server->on("/", HTTP_GET, [this](AsyncWebServerRequest *request) { request->redirect("/network/"); });
-    (**this->webServer).server->on("/network/", HTTP_GET, [this](AsyncWebServerRequest *request) { request->send(200, "text/html", WebPages::network_html); });
-    (**this->webServer).server->on("/network/network.js", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(200, "application/javascript", WebPages::network_js); });
+    (**this->webServer).server->on("/network/", HTTP_GET, [this](AsyncWebServerRequest *request) { request->send(SPIFFS, "/network/index.html", "text/html"); });
+    (**this->webServer).server->on("/network/network.js", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(SPIFFS, "/network/network.js", "application/javascript"); });
     (**this->webServer).server->on("/network/get", HTTP_GET, SetupServer::GETNetworks);
     //Couldnt get 'AsyncCallbackJsonWebHandler' to work here.
     (**this->webServer).server->on("/network/post", HTTP_POST, SetupServer::POSTNetwork);

@@ -1,5 +1,4 @@
 #include "configuredServer.h"
-#include <functional>
 
 EDisplayMode ConfiguredServer::displayMode = EDisplayMode::DISPLAY_ENABLED;
 EventData<MotionData> ConfiguredServer::updateDisplayEvent(ConfiguredServer::UpdateDisplay);
@@ -8,6 +7,13 @@ long ConfiguredServer::lastDisplayUpdate = 0;
 ConfiguredServer::ConfiguredServer(WebServer **webServer)
 {
     this->webServer = webServer;
+
+    if(!SPIFFS.begin())
+    {
+        Serial.println("An Error has occurred while mounting SPIFFS.");
+        Display::Log("SPIFFS Err");
+        return;
+    }
 
     motionUpdatedEvent = new EventData<MotionData>(
         [](void* context, MotionData data)
@@ -19,12 +25,12 @@ ConfiguredServer::ConfiguredServer(WebServer **webServer)
     Motion::motionUpdated.Register(*motionUpdatedEvent);
 
     //Shared resources
-    (**this->webServer).server->on("/assets/css/main.css", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(200, "text/css", WebPages::main_css); });
-    (**this->webServer).server->on("/assets/js/main.js", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(200, "application/javascript", WebPages::main_js); });
+    (**this->webServer).server->on("/assets/css/main.css", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(SPIFFS, "/assets/css/main.css", "text/css"); });
+    (**this->webServer).server->on("/assets/js/main.js", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(SPIFFS, "/assets/js/main.js", "application/javascript"); });
 
     //From SetupServer
-    (**this->webServer).server->on("/network/", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(200, "text/html", WebPages::network_html); });
-    (**this->webServer).server->on("/network/network.js", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(200, "application/javascript", WebPages::network_js); });
+    (**this->webServer).server->on("/network/", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(SPIFFS, "/network/index.html", "text/html"); });
+    (**this->webServer).server->on("/network/network.js", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(SPIFFS, "/network/network.js", "application/javascript"); });
     (**this->webServer).server->on("/network/get", HTTP_GET, SetupServer::GETNetworks);
     //Couldn't get 'AsyncCallbackJsonWebHandler' to work here.
     (**this->webServer).server->on("/network/post", HTTP_POST, SetupServer::POSTNetwork);
@@ -33,10 +39,10 @@ ConfiguredServer::ConfiguredServer(WebServer **webServer)
     (**this->webServer).server->on("/resetESP", HTTP_POST, SetupServer::POSTResetESP);
 
     //From ConfiguredServer
-    (**this->webServer).server->on("/motion/", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(200, "text/html", WebPages::motion_html); });
-    (**this->webServer).server->on("/motion/motion.js", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(200, "application/javascript", WebPages::motion_js); });
-    (**this->webServer).server->on("/assets/js/three.min.js", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(200, "application/javascript", WebPages::three_min_js); });
-    (**this->webServer).server->on("/assets/js/client.js", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(200, "application/javascript", WebPages::client_js); });
+    (**this->webServer).server->on("/motion/", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(SPIFFS, "/motion/index.html", "text/html"); });
+    (**this->webServer).server->on("/motion/motion.js", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(SPIFFS, "/motion/motion.js", "application/javascript"); });
+    (**this->webServer).server->on("/assets/js/three.min.js", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(SPIFFS, "/assets/js/three.min.js", "application/javascript"); });
+    (**this->webServer).server->on("/assets/js/client.js", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(SPIFFS, "/assets/js/client.js", "application/javascript"); });
     (**this->webServer).server->on("/display", HTTP_GET, ConfiguredServer::GETDisplay);
     (**this->webServer).server->on("/display", HTTP_POST, ConfiguredServer::POSTDisplay);
 

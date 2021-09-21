@@ -4,7 +4,7 @@
 #include <ArduinoJson.h>
 // #include <AsyncJson.h>
 #include "storage.h"
-#include "webPages.h"
+#include <SPIFFS.h>
 
 #ifndef SETUPSERVER_H
 #define SETUPSERVER_H

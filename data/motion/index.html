@@ -1,0 +1,14 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark light"><title>Motion | MPU Tracking</title><style id="themeColours"></style><link rel="stylesheet" href="/assets/css/main.css"><script src="../assets/js/three.min.js" type="module" defer="defer"></script><script src="./motion.js" type="module" defer="defer"></script><!-- Fix this body overflow --><style>body
+        {
+            overflow: hidden;
+        }
+
+        body > div
+        {
+            padding-left: 10px;
+        }</style></head><body><div><lable>Update took:</lable><label id="timeSinceLastUpdate" class="light"></label></div><br><!-- <div>
+        <label>AX: </label><label id='px' class='light'>px</label><br>
+        <label>AY: </label><label id='py' class='light'>py</label><br>
+        <label>AZ: </label><label id='pz' class='light'>pz</label><br>
+    </div>
+    <br> --><div><label>GX:</label><label id="rx" class="light">rx</label><br><label>GY:</label><label id="ry" class="light">ry</label><br><label>GZ:</label><label id="rz" class="light">rz</label><br></div><br><div><button id="calibrate">Calibrate</button></div><label id="darkMode" class="checkboxContainer"><span><p class="light">Dark mode</p></span><input type="checkbox"> <span class="checkmark"></span></label><div id="canvasContainer"></div></body></html>
